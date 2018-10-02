@@ -35,12 +35,10 @@ func resourceScalewayVolumeAttachment() *schema.Resource {
 var errVolumeAlreadyAttached = fmt.Errorf("Scaleway volume already attached")
 
 func resourceScalewayVolumeAttachmentCreate(d *schema.ResourceData, m interface{}) error {
-	mu.Lock()
-	defer mu.Unlock()
-
 	scaleway := m.(*Client).scaleway
 
 	vol, err := scaleway.GetVolume(d.Get("volume").(string))
+
 	if err != nil {
 		return err
 	}
@@ -141,9 +139,6 @@ func resourceScalewayVolumeAttachmentRead(d *schema.ResourceData, m interface{})
 const serverWaitTimeout = 5 * time.Minute
 
 func resourceScalewayVolumeAttachmentDelete(d *schema.ResourceData, m interface{}) error {
-	mu.Lock()
-	defer mu.Unlock()
-
 	scaleway := m.(*Client).scaleway
 
 	if err := withStoppedServer(scaleway, d.Get("server").(string), func(server *api.Server) error {

@@ -1,4 +1,27 @@
-## 1.6.0 (Unreleased)
+## 1.6.1 (Unreleased)
+## 1.6.0 (August 28, 2018)
+
+FEATURES:
+
+* **New Data Source:** `scaleway_security_group` ([#78](https://github.com/terraform-providers/terraform-provider-scaleway/issues/78))
+* **New Data Source:** `scaleway_volume` ([#77](https://github.com/terraform-providers/terraform-provider-scaleway/issues/77))
+* resource/scaleway_image: support filtering by most recently created image ([#82](https://github.com/terraform-providers/terraform-provider-scaleway/pull/82))
+
+BUG FIXES:
+
+* resource/scaleway_token: fix compatability to changes in Scaleway API ([#86](https://github.com/terraform-providers/terraform-provider-scaleway/pull/86))
+* resource/server: fix issue identifying restarts properly ([#87](https://github.com/terraform-providers/terraform-provider-scaleway/pull/87))
+
+## 1.5.1 (July 11, 2018)
+
+IMPROVEMENTS:
+
+* provider: update documentation ([#75](https://github.com/terraform-providers/terraform-provider-scaleway/pull/75))
+
+BUG FIXES:
+
+* resource/scaleway_server & resource/scaleway_volume_attachment: race condition between startup & shutdown of servers ([#74](https://github.com/terraform-providers/terraform-provider-scaleway/pull/74))
+
 ## 1.5.0 (June 29, 2018)
 
 IMPROVEMENTS:

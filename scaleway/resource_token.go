@@ -27,6 +27,22 @@ func resourceScalewayToken() *schema.Resource {
 				Computed:    true,
 				Description: "The userid of the associated user.",
 			},
+			"access_key": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The access_key.",
+			},
+			"secret_key": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The secret_key.",
+				Sensitive:   true,
+			},
+			"creation_ip": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The ip used to create the key.",
+			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -56,7 +72,6 @@ func resourceScalewayToken() *schema.Resource {
 func resourceScalewayTokenCreate(d *schema.ResourceData, m interface{}) error {
 	scaleway := m.(*Client).scaleway
 
-	mu.Lock()
 	email := ""
 	if mail, ok := d.GetOk("email"); ok {
 		email = mail.(string)
@@ -73,12 +88,14 @@ func resourceScalewayTokenCreate(d *schema.ResourceData, m interface{}) error {
 		Password: d.Get("password").(string),
 		Expires:  d.Get("expires").(bool),
 	})
-	mu.Unlock()
 	if err != nil {
 		return err
 	}
 
 	d.SetId(token.ID)
+	// the secret_key is not present in read operations
+	d.Set("secret_key", token.SecretKey)
+
 	return resourceScalewayTokenUpdate(d, m)
 }
 
@@ -99,6 +116,12 @@ func resourceScalewayTokenRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("expiration_date", token.Expires)
 	d.Set("expires", token.Expires != "")
 	d.Set("user_id", token.UserID)
+	d.Set("creation_ip", token.CreationIP)
+	d.Set("access_key", token.AccessKey)
+	// this is compatibilty to old tokens: the secret key is the id
+	if d.Get("secret_key") == "" {
+		d.Set("secret_key", token.ID)
+	}
 	user, err := scaleway.GetUser()
 	if err != nil {
 		return err
@@ -112,9 +135,6 @@ func resourceScalewayTokenRead(d *schema.ResourceData, m interface{}) error {
 
 func resourceScalewayTokenUpdate(d *schema.ResourceData, m interface{}) error {
 	scaleway := m.(*Client).scaleway
-
-	mu.Lock()
-	defer mu.Unlock()
 
 	if d.HasChange("description") || d.HasChange("expires") {
 		_, err := scaleway.UpdateToken(&api.UpdateTokenRequest{
@@ -132,9 +152,6 @@ func resourceScalewayTokenUpdate(d *schema.ResourceData, m interface{}) error {
 
 func resourceScalewayTokenDelete(d *schema.ResourceData, m interface{}) error {
 	scaleway := m.(*Client).scaleway
-
-	mu.Lock()
-	defer mu.Unlock()
 
 	err := scaleway.DeleteToken(d.Id())
 	if err != nil {

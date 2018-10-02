@@ -1,12 +1,12 @@
 ---
 layout: "scaleway"
 page_title: "Scaleway: security_group_rule"
-sidebar_current: "docs-scaleway-resource-security_group_rule"
+sidebar_current: "docs-scaleway-resource-security-group-rule"
 description: |-
   Manages Scaleway security group rules.
 ---
 
-# scaleway\_security\_group\_rule
+# scaleway_security_group_rule
 
 Provides security group rules. This allows security group rules to be created, updated and deleted.
 For additional details please refer to [API documentation](https://developer.scaleway.com/#security-groups-manage-rules).

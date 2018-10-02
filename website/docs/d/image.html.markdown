@@ -6,7 +6,7 @@ description: |-
   Get information on a Scaleway image.
 ---
 
-# scaleway\_image
+# scaleway_image
 
 Use this data source to get the ID of a registered Image for use with the
 `scaleway_server` resource.
@@ -34,6 +34,8 @@ resource "scaleway_server" "base" {
 
 * `name` - (Optional) Exact name of desired Image
 
+* `most_recent` - (Optional) Return most recent image if multiple exist. Can not be used together with name_filter.
+
 ## Attributes Reference
 
 `id` is set to the ID of the found Image. In addition, the following attributes
@@ -46,4 +48,3 @@ are exported:
 * `public` - is this a public image
 
 * `creation_date` - date when image was created
-

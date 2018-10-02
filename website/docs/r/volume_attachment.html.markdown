@@ -1,17 +1,16 @@
 ---
 layout: "scaleway"
 page_title: "Scaleway: volume attachment"
-sidebar_current: "docs-scaleway-resource-volume attachment"
+sidebar_current: "docs-scaleway-resource-volume-attachment"
 description: |-
   Manages Scaleway Volume attachments for servers.
 ---
 
-# scaleway\_volume\_attachment
+# scaleway_volume_attachment
 
 This allows volumes to be attached to servers.
 
-**Warning:** Attaching volumes requires the servers to be powered off. This will lead
-to downtime if the server is already in use.
+~> **Warning:** Attaching volumes requires the servers to be powered off. This will lead to downtime if the server is already in use.
 
 ## Example Usage
 

@@ -1,12 +1,12 @@
 ---
 layout: "scaleway"
 page_title: "Scaleway: security_group"
-sidebar_current: "docs-scaleway-resource-security_group"
+sidebar_current: "docs-scaleway-resource-security-group-x"
 description: |-
   Manages Scaleway security groups.
 ---
 
-# scaleway\_security\_group
+# scaleway_security_group
 
 Provides security groups. This allows security groups to be created, updated and deleted.
 For additional details please refer to [API documentation](https://developer.scaleway.com/#security-groups).

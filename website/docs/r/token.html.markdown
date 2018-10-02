@@ -6,7 +6,7 @@ description: |-
   Manages Scaleway Tokens.
 ---
 
-# scaleway\_token
+# scaleway_token
 
 Provides Tokens for scaleway API access. For additional details please refer to [API documentation](https://developer.scaleway.com/#tokens-tokens-post).
 
@@ -33,6 +33,9 @@ The following arguments are supported:
 The following attributes are exported:
 
 * `id` - Token ID - can be used to access scaleway API
+* `access_key` - Token Access Key
+* `secret_key` - Token Secret Key
+* `creation_ip` - IP used to create the token
 * `expiration_date` - Expiration date of token, if expiration is requested
 
 ## Import

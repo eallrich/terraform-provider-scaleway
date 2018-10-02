@@ -1,12 +1,12 @@
 ---
 layout: "scaleway"
 page_title: "Scaleway: user_data"
-sidebar_current: "docs-scaleway-resource-user_data"
+sidebar_current: "docs-scaleway-resource-user-data"
 description: |-
   Manages Scaleway Server UserData.
 ---
 
-# scaleway\_user\_data
+# scaleway_user_data
 
 Provides user data for servers.
 For additional details please refer to [API documentation](https://developer.scaleway.com/#user-data).

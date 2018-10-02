@@ -79,6 +79,13 @@ func TestAccScalewayServer_Basic(t *testing.T) {
 					testAccCheckScalewayServerIPDetachmentAttributes("scaleway_server.base"),
 				),
 			},
+			resource.TestStep{
+				Config: testAccCheckScalewayServerConfig_dataSource,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"scaleway_server.base", "state", "running"),
+				),
+			},
 		},
 	})
 }
@@ -315,12 +322,30 @@ func testAccCheckScalewayServerExists(n string) resource.TestCheckFunc {
 			return fmt.Errorf("Record not found")
 		}
 
+		if server.State != "running" {
+			return fmt.Errorf("expected server to be running, but was %q", server.State)
+		}
+
 		return nil
 	}
 }
 
 var armImageIdentifier = "5faef9cd-ea9b-4a63-9171-9e26bec03dbc"
 var x86_64ImageIdentifier = "e20532c4-1fa0-4c97-992f-436b8d372c07"
+
+var testAccCheckScalewayServerConfig_dataSource = `
+data "scaleway_image" "ubuntu" {
+  architecture = "arm"
+  name         = "Ubuntu Xenial"
+}
+
+resource "scaleway_server" "base" {
+  name = "test"
+
+  image = "${data.scaleway_image.ubuntu.id}"
+  type = "C1"
+  tags = [ "terraform-test", "xenial" ]
+}`
 
 var testAccCheckScalewayServerConfig = fmt.Sprintf(`
 resource "scaleway_server" "base" {
@@ -337,7 +362,7 @@ resource "scaleway_server" "base" {
   # ubuntu 14.04
   image = "%s"
   type = "VC1S"
-  tags = [ "terraform-test" ]
+  tags = [ "terraform-test", "local_boot" ]
   boot_type = "local"
 }`, x86_64ImageIdentifier)
 
@@ -349,7 +374,7 @@ resource "scaleway_server" "base" {
   # ubuntu 14.04
   image = "%s"
   type = "C1"
-  tags = [ "terraform-test" ]
+  tags = [ "terraform-test", "scaleway_ip" ]
   public_ip = "${scaleway_ip.base.ip}"
 }`, armImageIdentifier)
 
@@ -368,7 +393,7 @@ resource "scaleway_server" "base" {
   # ubuntu 14.04
   image = "%s"
   type = "C1"
-  tags = [ "terraform-test" ]
+  tags = [ "terraform-test", "inline-images" ]
 
   volume {
     size_in_gb = 20
@@ -402,7 +427,7 @@ resource "scaleway_server" "base" {
   # ubuntu 14.04
   image = "%s"
   type = "C1"
-  tags = [ "terraform-test" ]
+  tags = [ "terraform-test", "security_groups.blue" ]
   security_group = "${scaleway_security_group.blue.id}"
 }`, armImageIdentifier)
 
@@ -422,6 +447,6 @@ resource "scaleway_server" "base" {
   # ubuntu 14.04
   image = "%s"
   type = "C1"
-  tags = [ "terraform-test" ]
+  tags = [ "terraform-test", "security_groups.red" ]
   security_group = "${scaleway_security_group.red.id}"
 }`, armImageIdentifier)

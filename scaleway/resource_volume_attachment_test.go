@@ -17,6 +17,7 @@ func TestAccScalewayVolumeAttachment_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: testAccCheckScalewayVolumeAttachmentConfig,
 				Check: resource.ComposeTestCheckFunc(
+					testAccCheckScalewayServerExists("scaleway_server.base"),
 					testAccCheckScalewayVolumeAttachmentExists("scaleway_volume_attachment.test"),
 				),
 			},
@@ -76,7 +77,8 @@ resource "scaleway_server" "base" {
   # ubuntu 14.04
   image = "%s"
   type = "C1"
-  # state = "stopped"
+
+  tags = [ "terraform-test", "external-volume-attachment" ]
 }
 
 resource "scaleway_volume" "test" {
